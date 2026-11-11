@@ -1,4 +1,4 @@
-# Contribution: [Issue Title]
+# Contribution: Add unit tests for the Open Graph image URL helpers
 
 Path: `beat-2-contribution/contribution-story.md`
 
@@ -8,10 +8,9 @@ format criteria grade exactly that. Your course repo link is the whole submissio
 files and no evidence uploads are part of Assignment 5.
 
 **Contribution Number:** [1]
-**Student:** [Student name]
-**GitHub Username:** [your GitHub username, exactly as it appears on your profile - no @, no
-profile URL. Your comments upstream are identified by this name.]
-**Issue:** [GitHub issue link]
+**Student:** Ria Vadhavkar
+**GitHub Username:** riavadhavkar
+**Issue:** https://github.com/elmohq/elmo/issues/1173
 **Pull Request:** [GitHub PR link, once opened]
 
 One repository, built across units 5 to 8, telling the whole story of your real
@@ -59,11 +58,9 @@ one in the week it belongs to.
 
 I installed issue-scout over my Unit 1 skill, restored rubric.md and the evidence guide from my course repo because the old skill folder was missing, and wrote a search strategy with three gh search issues queries (TypeScript, JavaScript, Java upgrades) ranked by fewest comments. The first scan returned 300 results and accepted all of its top five, but four were from one repo where a member had filed a batch within 30 seconds, so I added a one-result-per-repository filter. Grading my picks showed a bigger gap: the rubric had no "already fixed or open PR" check, so OpenSearch-Dashboards#7141 was rejected only by other checks and kana-dojo#33943 was accepted though it was already done, and I added that check to the rubric in Unit 6. Running the scout from inside Claude Code was blocked by permission prompts, so I ran the first scans in my own terminal and added a gh search issues allowlist rule.
 
-**Unit 6: [one line on the tool work]**
+**Unit 6: Installed the voice guard and a repo-memory file, and the first reproduction report got rejected**
 
-[2-4 sentences: the voice-guard, the repo-memory file. What broke or
-fell short, and what changed because of it. "Nothing broke" counts when
-it is true - say how you know.]
+I merged my three voice-guide copies into one guide at ~/.claude/voice-guard/voice-guide.md, added an upstream section with rules for claims, questions and pings, and hooked check_voice.py into Claude Code. The wiring test passed: `gh issue comment --help` was stopped with "no body the guard can read", and my real claim passed when posted with --body-file. repro-check rejected my first reproduction report because step 3 referred to a script without showing it, and it also caught my local username in a file path, so I inlined the script and swapped the path for a placeholder. Two things were missing on my machine and I restored them: the repro-check and plan-check skills, and Node 24 plus pnpm 12.16.1 for elmo. CLAUDE.local.md came to 35 lines and is excluded from commits with .git/info/exclude.
 
 **Unit 7: [one line on the tool work]**
 
@@ -79,24 +76,20 @@ drafted, what you did with the draft.]
 
 ## Why I Chose This Issue
 
-[1-2 paragraphs in your own words: how you searched, what your scan
-surfaced, what your scout's verdict said, why this issue fits your
-profile, and what you hope to learn. If your scout's verdict on it
-was reject and you chose it anyway, say so here and say why; choosing
-against your own tool silently is what loses points. Close with an
-honest read of the tool itself: where the scout fell short on a real
-wild search and what you changed or would change, or what convinced
-you it held up. **Record the link to your claim comment in this section too.**
-Not claimed yet? Write `claim pending` and today's date where the link goes,
-and add the link the moment your claim lands.]
+I chose elmohq/elmo#1173, adding unit tests for the Open Graph image URL helpers in apps/www/src/lib/og.ts. I have never contributed to open source before, and what I want to learn is how to interact with the open source community. This issue fits because it is TypeScript with vitest and I have experience building front-end web apps, and it spells out every test case, so I could finish it in the time I have.
+
+I found it after a longer route than planned. My scout's first scan (three gh search queries for TypeScript, JavaScript and Java upgrades) accepted all of its top five, but four were one batch of issues filed within 30 seconds by a maintainer. Both issues I picked from the course site were rejected by the scout: OpenSearch-Dashboards#7141 was already fixed by a merged PR, and swift#53247 had no stated deliverable. I then filtered the site's export to TypeScript and JavaScript repos and checked merged and linked PRs with gh. Four of the five elmo issues listed on the site already had open PRs. #1173 had none, and the patched scout accepted it on all six checks with a difficulty note of straightforward. The elmo repo is on the site, but #1173 is not listed there, and I chose it anyway.
+
+My honest read of the scout: its five checks held up on real issues, but the rubric missed issues that were already fixed (it accepted kana-dojo#33943, where the entry already existed), and the scan could not tell me whether maintainers merge outside PRs, which I checked by hand with gh. I added a not-already-done check to the rubric; I have not rerun the Unit 1 regression with it.
+
+Claim comment: https://github.com/elmohq/elmo/issues/1173#issuecomment-6807239352 (posted 2026-11-11)
 
 **Toolkit**
 
-- Tool: issue-scout (your scout: your search strategy, your rubric),
-  and how you used it
-- What it produced: [the scan and its verdict on this issue, described]
-- Difficulties: [where it fell short, or "none met" if none did]
-- What changed: [what you patched or would update, or "nothing"]
+- Tool: issue-scout, with my three-query search strategy and my rubric, plus gh for free checks on merged and linked PRs
+- What it produced: a first scan of 300 results with five accepts (four from one batch), rejections of OpenSearch-Dashboards#7141 and swift#53247, an accept with a hollow result on kana-dojo#33943, rejections of elmo#1176 and #1112 for open PRs, and an accept of elmo#1173 on all six checks after the patch
+- Difficulties: no already-fixed check, no merge-speed signal, and running the scout from inside Claude Code was blocked by permission prompts until I granted read-only gh access for the call
+- What changed: a one-result-per-repository filter in the strategy; scope-fits replaced by scope-feasible plus a difficulty note (the unit patch); a new not-already-done check
 
 ---
 
@@ -131,31 +124,39 @@ and add the link the moment your claim lands.]
 
 **Environment Setup**
 
-[What a stranger would need to stand this up: your operating system,
-the relevant versions (language, runtime, package manager, the project
-itself), and how you set the project up. Then the challenges you faced
-and how you solved them, or that none came up.]
+macOS 26.5.2, Apple Silicon (arm64). Node v24.22.3 and pnpm 12.16.1, the repo's `engines` and `packageManager` values. elmo at commit 31d9f9d5 (main, committed 2026-11-10), with vitest v5.0.5 from `apps/www`. Setup: I forked and cloned the repo, then ran `pnpm install --frozen-lockfile` (27.8 s, no errors). Challenge: my default Node was v26.13.1 with no pnpm or corepack, so I downloaded Node 24 (its checksum matched the published SHASUMS file) and pnpm 12.16.1 into ~/.local/opt and put them first on PATH for these commands only.
 
 **Steps to Reproduce**
 
-1. [Step 1]
-2. [Step 2]
-3. [Observed result]
+1. `cd apps/www && pnpm exec vitest run src/lib/__tests__/og.test.ts` printed `No test files found, exiting with code 1`.
+2. `ls apps/www/src/lib/__tests__/` lists agent-discovery, api-catalog, auth-md, external-link, format, html-to-markdown, request-handler and seo (all `.test.ts`), none for `og.ts`.
+3. I ran the issue's listed cases through `getMarketingOgImage` and `getPageImage` with a throwaway script kept outside the repo, `probe.ts`, from the repo root with `pnpm exec tsx /path/to/probe.ts`. It reads the `title` back out of each returned URL and prints `ok` or `DIFF` per case:
+
+```ts
+import { getMarketingOgImage, getPageImage } from "<path-to-clone>/apps/www/src/lib/og.ts";
+const t = (s: string) => new URL(getMarketingOgImage({ title: s }), "http://x").searchParams.get("title");
+const cases: [string, string][] = [["Pricing · Elmo","Pricing"],["Blog | Elmo","Blog"],["Pricing  ·  Elmo","Pricing"],["Pricing · ELMO","Pricing"],["Elmo · Open Source AI Visibility","Open Source AI Visibility"],["Elmo - Docs","Docs"],["Elmo: Pricing","Pricing"],["elmo · Pricing","Pricing"],["Elmo·Pricing","Pricing"],["Elmo · Pricing · Elmo","Pricing"],["Pricing","Pricing"],["Elmo","Elmo"],["Elmo Cloud","Elmo Cloud"],["Why Elmo · Elmo","Why Elmo"],["Elmo · Why Elmo","Why Elmo"],["Elmohq · Pricing","Elmohq · Pricing"],["Pricing · Elmohq","Pricing · Elmohq"],["A/B? #1 & more","A/B? #1 & more"]];
+for (const [i, want] of cases) { const got = t(i); console.log(got === want ? "ok  " : "DIFF", JSON.stringify(i), "->", JSON.stringify(got), got === want ? "" : "expected " + JSON.stringify(want)); }
+console.log(getMarketingOgImage({ title: "Pricing", description: "Plans & pricing for teams", label: "Pricing" }));
+console.log(getMarketingOgImage({ title: "Pricing" }), getMarketingOgImage({ title: "Pricing", description: "", label: "" }));
+console.log(JSON.stringify(getPageImage([])), JSON.stringify(getPageImage(["guides","setup"])));
+const a = ["guides","setup"]; getPageImage(a); console.log(JSON.stringify(a));
+```
+
+   Result: `ok` for all 18 title cases, then `/og.png?title=Pricing&description=Plans+%26+pricing+for+teams&label=Pricing`, `/og.png?title=Pricing` twice (no `description` or `label`, and empty ones), `{"segments":["image.png"],"url":"/og/docs/image.png"}`, `{"segments":["guides","setup","image.png"],"url":"/og/docs/guides/setup/image.png"}`, and `["guides","setup"]` after the call.
 
 **Reproduction Evidence**
 
-- **Commit showing reproduction:** [link to commit in your fork]
-- **Screenshots/logs:** [if applicable]
-- **My findings:** [what you discovered during reproduction; an
-  honest, evidenced cannot-reproduce that led you to re-pick or ask
-  the maintainer belongs here and costs you nothing]
+- **Commit showing reproduction:** https://github.com/elmohq/elmo/commit/31d9f9d58fe81eb2be41c8b3b8beaf09e399a54b (upstream main, where the gap exists; this issue asks for missing tests, so there is no failing commit to link)
+- **Screenshots/logs:** the vitest "No test files found" output in step 1 and the 18 `ok` lines in step 3
+- **My findings:** The gap is real: `og.ts` has no tests. The current behavior already matches every expected value I checked, so the tests can be written without changing `og.ts`. I haven't run `pnpm lint` yet because there is no test file to check.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: repro-check, the voice guard, and a throwaway tsx probe script
+- What it produced: a reject on the first report and an accept on the second, and a voice-guard pass on both drafts
+- Difficulties: the first report named a script it did not show, and the script's import path held my local username
+- What changed: I inlined the script, replaced the path with a placeholder, and listed the test folder's contents in the report
 
 ---
 
