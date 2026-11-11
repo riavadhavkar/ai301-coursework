@@ -55,10 +55,9 @@ happened; these entries are the toolkit's own timeline.
 All four entries are graded. Keep every heading below, and fill each
 one in the week it belongs to.
 
-**Unit 5: [one line on the tool work]**
+**Unit 5: Built the scout and found its rubric misses issues that are already fixed**
 
-[2-4 sentences: what you built (the scout, your strategy), what broke
-or fell short, what changed because of it.]
+I installed issue-scout over my Unit 1 skill, restored rubric.md and the evidence guide from my course repo because the old skill folder was missing, and wrote a search strategy with three gh search issues queries (TypeScript, JavaScript, Java upgrades) ranked by fewest comments. The first scan returned 300 results and accepted all of its top five, but four were from one repo where a member had filed a batch within 30 seconds, so I added a one-result-per-repository filter. Grading my picks showed a bigger gap: the rubric had no "already fixed or open PR" check, so OpenSearch-Dashboards#7141 was rejected only by other checks and kana-dojo#33943 was accepted though it was already done, and I added that check to the rubric in Unit 6. Running the scout from inside Claude Code was blocked by permission prompts, so I ran the first scans in my own terminal and added a gh search issues allowlist rule.
 
 **Unit 6: [one line on the tool work]**
 
