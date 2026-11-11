@@ -60,16 +60,15 @@ I installed issue-scout over my Unit 1 skill, restored rubric.md and the evidenc
 
 **Unit 6: Installed the voice guard and a repo-memory file, and the first reproduction report got rejected**
 
-I merged my three voice-guide copies into one guide at ~/.claude/voice-guard/voice-guide.md, added an upstream section with rules for claims, questions and pings, and hooked check_voice.py into Claude Code. The wiring test passed: `gh issue comment --help` was stopped with "no body the guard can read", and my real claim passed when posted with --body-file. repro-check rejected my first reproduction report because step 3 referred to a script without showing it, and it also caught my local username in a file path, so I inlined the script and swapped the path for a placeholder. Two things were missing on my machine and I restored them: the repro-check and plan-check skills, and Node 24 plus pnpm 12.16.1 for elmo. CLAUDE.local.md came to 35 lines and is excluded from commits with .git/info/exclude.
+I merged my three voice-guide copies into one guide at ~/.claude/voice-guard/voice-guide.md, added an upstream section with rules for claims, questions and pings, and hooked check_voice.py into Claude Code; the wiring test passed, since `gh issue comment --help` was stopped with "no body the guard can read" and my real claim passed with --body-file. repro-check rejected my first reproduction report because step 3 referred to a script without showing it, and it also caught my local username in a file path, so I inlined the script and swapped the path for a placeholder. Two things were missing on my machine and I restored them: the repro-check and plan-check skills, and Node 24 plus pnpm 12.16.1 for elmo. CLAUDE.local.md came to 35 lines and is excluded from commits with .git/info/exclude.
 
 **Unit 7: The ship-gate caught a miss in my tests that I had read past, and the PR is open**
 
-I wrote a ship manifest with three rows from elmo's CI (pnpm lint, the apps/www tests, pnpm turbo check-types) and tested each in a clean shell before changing code; every row needed a PATH prefix because a clean shell has Node 26 and no pnpm. The ship-gate ran four times on my branch. The first run passed all three repo checks but my pr-precheck rejected the branch: the issue says to use one top-level describe per function and my test file had three, so I nested two of them under one and added a third commit. The next runs asked me to word the regression-check paragraph to match who ran it and to name my OS, and I also corrected a line that credited me with setting up Node and pnpm, which Claude Code did. The fourth run passed and the PR opened through Claude Code as elmohq/elmo#1178.
+I wrote a ship manifest with three rows from elmo's CI (pnpm lint, the apps/www tests, pnpm turbo check-types) and tested each in a clean shell before changing code; every row needed a PATH prefix because a clean shell has Node 26 and no pnpm. The ship-gate ran four times on my branch. The first run passed all three repo checks but my pr-precheck rejected the branch: the issue says to use one top-level describe per function and my test file had three, so I nested two of them under one and added a third commit. The next runs asked me to word the regression-check paragraph to match who ran it and to name my OS, and I also corrected a line that credited me with setting up Node and pnpm, which Claude Code did; the fourth run passed and the PR opened through Claude Code as elmohq/elmo#1178.
 
-**Unit 8: [one line on the tool work]**
+**Unit 8: The monitor read my PR and told me to wait**
 
-[2-4 sentences: the PR-monitor and your playbook. What it read, what it
-drafted, what you did with the draft.]
+I installed the PR monitor and wrote a playbook from elmo's real numbers: CONTRIBUTING.md states no wait time, and the last five merged outside PRs got a maintainer's first response in 0.25 to 1.2 days, with one at 69.7 days, so my rules nudge once after 5 quiet days. The monitor's state line said "FEEDBACK-IN" because the only comment on my PR is Vercel's bot notice that a Blue Whale Labs member must authorize the deploy, and its full run correctly drafted nothing and said to wait, quoting my 5-day rule. It did not say which check was failing, so I confirmed with gh that the failing one is that Vercel authorization and not my tests. Claude Code's auto-mode classifier blocked the install the first time, so I ran it in my own terminal.
 
 ---
 
@@ -220,6 +219,14 @@ Created the branch `fix/1173-og-helper-tests` and wrote `og.test.ts` with three 
 
 `pnpm lint` flagged one long line in my test file (the `titleOf` helper). I ran `biome format --write` on that file only and it wrapped the line. I added `riavadhavkar` to `.github/contributors.txt` for the CLA and made two commits with plain imperative subjects. Before committing, my clone had no git identity, so I set a repo-local name and my GitHub noreply address, not my real email. No deviations from the plan.
 
+**2026-11-11**
+
+My first ship-gate run rejected the branch: the issue asks for one top-level describe per function and I had three. I nested the title and URL groups under one describe("getMarketingOgImage") in a third commit, re-ran the regression check on the final commit (the same test failed, 24 passed), and recorded the deviation in plan.md and this story.
+
+**2026-11-11**
+
+I opened the PR through Claude Code after the gate passed, and checked that it targets elmohq/elmo main from my fork with three commits and two files. The only status on it is Vercel's authorization notice. The PR monitor's first run said to wait.
+
 **Toolkit**
 
 - Tool: Claude Code writing the test file and running the checks, with biome as the formatter
@@ -254,25 +261,22 @@ Created the branch `fix/1173-og-helper-tests` and wrote `og.test.ts` with three 
 
 **Technical Skills Gained**
 
-[What you learned technically, named concretely.]
+I wrote my first vitest file with it.each tables and read the title back out of a URL with searchParams instead of comparing whole strings. I measured test coverage with the v8 provider that was already in the repo, and I learned to check a repo's rhythm from its history: closed PRs, author association and time to first response through gh api. I also learned that a truly clean shell has a different Node and no pnpm than my terminal, so every manifest command needs its own PATH.
 
 **Challenges Overcome**
 
-[What was hard and how you solved it; point at the real events, the
-Toolkit blocks above are full of them.]
+The hardest part was learning to work with AI to do all of this. The real events: my scout accepted an issue that was already done and missed that the rubric had no already-fixed check, so I added one; the ship-gate rejected my first test file because I had read past one line of the issue ("one top-level describe per function"); and Claude Code's auto-mode classifier blocked the ship-gate and PR-monitor installs, so I ran those two in my own terminal. The voice guard also stopped my PR draft on a line I had left unfinished, which was the right call.
 
 **What I'd Do Differently Next Time**
 
-[Reflection on your process.]
+I would read the issue's whole conventions section before writing any code, and I would check the already-done and open-PR questions before I spend any scout credit. I would also ask my instructors sooner whether an issue that is not on the site counts, instead of finding out the site's list was out of date after several candidates. Finally, I would check the first small outside merge history before picking a repo, not after.
 
 ---
 
 ## Resources Used
 
-[What actually helped, not a reading list. List things this story
-already shows you using: the doc you followed to set the environment
-up, the thread that explained the bug, the person who answered you.
-One real entry beats ten plausible ones.]
-
-- [Link to documentation that helped]
-- [Discussion, issue, or post that helped]
+- Issue #1173, which spelled out every case and the conventions: https://github.com/elmohq/elmo/issues/1173
+- elmo's CONTRIBUTING.md and AGENTS.md (CLA, commit rules, no attribution lines, run pnpm lint): https://github.com/elmohq/elmo/blob/main/CONTRIBUTING.md and https://github.com/elmohq/elmo/blob/main/AGENTS.md
+- elmo's Build workflow, where my ship manifest's three checks come from: https://github.com/elmohq/elmo/blob/main/.github/workflows/build.yaml
+- The neighboring test apps/www/src/lib/__tests__/external-link.test.ts, whose style I followed: https://github.com/elmohq/elmo/blob/main/apps/www/src/lib/__tests__/external-link.test.ts
+- The ship-gate's pr-precheck feedback on my branch, which caught the describe structure
