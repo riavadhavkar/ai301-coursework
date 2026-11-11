@@ -11,7 +11,7 @@ files and no evidence uploads are part of Assignment 5.
 **Student:** Ria Vadhavkar
 **GitHub Username:** riavadhavkar
 **Issue:** https://github.com/elmohq/elmo/issues/1173
-**Pull Request:** [GitHub PR link, once opened]
+**Pull Request:** https://github.com/elmohq/elmo/pull/1178
 
 One repository, built across units 5 to 8, telling the whole story of your real
 contribution. Fill it as you work, not at the end — the sections below ask for evidence that
@@ -62,10 +62,9 @@ I installed issue-scout over my Unit 1 skill, restored rubric.md and the evidenc
 
 I merged my three voice-guide copies into one guide at ~/.claude/voice-guard/voice-guide.md, added an upstream section with rules for claims, questions and pings, and hooked check_voice.py into Claude Code. The wiring test passed: `gh issue comment --help` was stopped with "no body the guard can read", and my real claim passed when posted with --body-file. repro-check rejected my first reproduction report because step 3 referred to a script without showing it, and it also caught my local username in a file path, so I inlined the script and swapped the path for a placeholder. Two things were missing on my machine and I restored them: the repro-check and plan-check skills, and Node 24 plus pnpm 12.16.1 for elmo. CLAUDE.local.md came to 35 lines and is excluded from commits with .git/info/exclude.
 
-**Unit 7: [one line on the tool work]**
+**Unit 7: The ship-gate caught a miss in my tests that I had read past, and the PR is open**
 
-[2-4 sentences: the ship-gate and your gate manifest. What it produced
-on your real branch, what fought you, what changed because of it.]
+I wrote a ship manifest with three rows from elmo's CI (pnpm lint, the apps/www tests, pnpm turbo check-types) and tested each in a clean shell before changing code; every row needed a PATH prefix because a clean shell has Node 26 and no pnpm. The ship-gate ran four times on my branch. The first run passed all three repo checks but my pr-precheck rejected the branch: the issue says to use one top-level describe per function and my test file had three, so I nested two of them under one and added a third commit. The next runs asked me to word the regression-check paragraph to match who ran it and to name my OS, and I also corrected a line that credited me with setting up Node and pnpm, which Claude Code did. The fourth run passed and the PR opened through Claude Code as elmohq/elmo#1178.
 
 **Unit 8: [one line on the tool work]**
 
@@ -97,26 +96,26 @@ Claim comment: https://github.com/elmohq/elmo/issues/1173#issuecomment-680723935
 
 **Problem Description**
 
-[In your own words, what is broken or missing?]
+`apps/www/src/lib/og.ts` exports two small helpers, `getMarketingOgImage` and `getPageImage`, and neither has a test, while most files next to it in `apps/www/src/lib/__tests__/` do.
 
 **Expected Behavior**
 
-[What should happen?]
+A new `og.test.ts` covers the cases the issue lists, passes under vitest, and `pnpm lint` still passes. The PR touches only that file plus my line in `.github/contributors.txt`.
 
 **Current Behavior**
 
-[What actually happens?]
+There is no `og.test.ts`: `vitest run src/lib/__tests__/og.test.ts` prints "No test files found". The helpers already return every value the issue lists. I checked all 18 title cases plus the URL, empty-parameter and no-mutation cases.
 
 **Affected Components**
 
-[Which parts of the codebase are involved?]
+`apps/www/src/lib/og.ts` (read only), `apps/www/src/lib/__tests__/og.test.ts` (new), `.github/contributors.txt` (one line for the CLA), and `apps/www/vitest.config.ts` (read only; its include pattern is `src/**/*.test.ts`).
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: Claude Code reading og.ts, the vitest config and the neighboring tests, plus my own probe script run through pnpm exec tsx
+- What it produced: the four answers above, backed by the 18-case probe output
+- Difficulties: none met; the issue spells out every case and the probe confirmed each value
+- What changed: nothing
 
 ---
 
@@ -164,93 +163,90 @@ const a = ["guides","setup"]; getPageImage(a); console.log(JSON.stringify(a));
 
 **Analysis**
 
-[Your analysis of the root cause: what is causing the issue, traced
-to the files and functions involved.]
+There is no defect to trace. `getMarketingOgImage` builds `cleanTitle` with two regexes, `/^Elmo\s*[·\-|:]\s*/i` for the start and `/\s*[·\-|:]\s*Elmo$/i` for the end. It sets `title` on a `URLSearchParams`, adds `description` and `label` only when they are non-empty, and returns `/og.png?` plus the query. `getPageImage` copies the slugs with a spread, appends `"image.png"`, and returns `{ segments, url }` with `url` as `/og/docs/` plus the segments joined by `/`. The spread is why the input array is not mutated.
 
 **Proposed Solution**
 
-[High-level description of your fix approach, and what you are
-deliberately NOT changing.]
+Add `apps/www/src/lib/__tests__/og.test.ts`, written in the style of its neighbors (vitest `describe` and `it`, `@/lib/og` import, tabs, double quotes). It reads the `title` back out of the returned URL with `new URL(result, "http://x").searchParams.get("title")`, as the issue suggests, so the tests do not depend on how spaces are encoded. It covers the brand removed from the end, the start and both ends, the left-unchanged cases, special characters, the `/og.png` path, `description` and `label` passed through only when non-empty, and `getPageImage` for no slugs, nested slugs and non-mutation. I will not change `og.ts`, the vitest config or any dependency, add no changeset (the repo says never for `apps/www`), and add no test beyond the cases the issue lists.
 
 **Implementation Plan**
 
-1. [Modify file X to do Y]
-2. [Add or change Z]
-3. [Update tests]
+1. Create `apps/www/src/lib/__tests__/og.test.ts` with the cases above.
+2. Add `riavadhavkar` on its own line to `.github/contributors.txt`, which is the CLA signature.
+3. Run the new test, then every row in my ship manifest (`pnpm lint`, the apps/www tests, `pnpm turbo check-types`), and keep the output in a working note that stays out of the commits.
+4. To show the tests catch a regression, temporarily break one regex in `og.ts`, confirm the new test fails, then revert it and confirm `git diff` shows no change to `og.ts`. This is never committed.
+5. Commit in two commits with plain imperative subjects and no attribution lines, on the branch `fix/1173-og-helper-tests`.
 
-[Record deviations here as they happen: what changed mid-build and
-why. A recorded deviation is honest work; silent drift is not.]
+I have not run `pnpm lint` or `pnpm turbo check-types` with the new file in place, because it does not exist yet; both pass on unmodified main.
+
+**Deviation (2026-11-11):** my first version had three top-level describes (title, URL and `getPageImage`), but the issue asks for one top-level describe per function. The ship-gate's pr-precheck caught it, and I nested the title and URL groups under one `describe("getMarketingOgImage")` in a third commit. The tests and their count (25) did not change.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: plan-check, in live mode, on my plan and a plan comment I did not post
+- What it produced: an accept on all eight checks on the first run
+- Difficulties: it flagged that the plan had no unknowns note and no Deviations heading, and that the comment asked a question the issue already answers
+- What changed: I added an Unknowns section and a Deviations heading to the plan and removed the question from the comment
 
 ---
 
 ## Testing Strategy
 
-[What observable checks prove the fix: your reproduction steps re-run
-against the built change (before and after), and the repo's own test
-suite or checks with the outcome shown. "Tests pass" with nothing
-observable named is not a strategy.]
+The observable checks are the ones from my reproduction, run again against the built change.
+
+- **Before:** on main at 31d9f9d5, `cd apps/www && pnpm exec vitest run src/lib/__tests__/og.test.ts` prints `No test files found, exiting with code 1`.
+- **After:** the same command prints `Test Files  1 passed (1)` and `Tests  25 passed (25)`.
+- **Repo checks, each run in a clean shell:** `pnpm lint` exit 0 (1061 files), `cd apps/www && pnpm test` 9 files and 87 tests passed, and `pnpm turbo check-types` 13 tasks successful.
+- **Regression check:** I temporarily removed the `i` flag from the start-of-title regex in `og.ts`. One test failed (`removes the brand from the start of "elmo · Pricing"`) and 24 passed. I reverted it, and `cmp` showed `og.ts` identical to the original.
+- **Coverage:** `vitest run --coverage` on `og.ts` reports 100% of statements (10/10), branches (4/4), functions (2/2) and lines (8/8). I did not add edge cases beyond the issue's list, because the issue says to cover only the listed cases and not to lock in the behavior of "-Elmo" words or separator-only titles.
+- **Not run:** the e2e tests, `pnpm lint:spec`, and CI's other jobs.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: the ship-gate manifest (three rows) plus vitest, and a clean-shell test of every row before I changed any code
+- What it produced: three passing checks on main before the change and three passing checks after, plus the regression check
+- Difficulties: a truly clean shell has Node 26 and no pnpm, so every manifest row needs a PATH prefix; biome flagged one long line in my first version of the test file
+- What changed: I put the PATH prefix in every manifest row and ran biome format on the test file
 
 ---
 
 ## Implementation Notes
 
-[A running log, added to as you work. Date each entry. What you
-built, decisions you made when you made them, wrong turns included.]
+**2026-11-11**
 
-**[Date]**
+Created the branch `fix/1173-og-helper-tests` and wrote `og.test.ts` with three `describe` blocks (title, URL, `getPageImage`) and `it.each` tables for the title cases. It passed on the first run, 25 of 25, which fits the issue's statement that the expected values were already checked against the current code.
 
-[Entry]
+**2026-11-11**
 
-**[Date]**
-
-[Entry]
+`pnpm lint` flagged one long line in my test file (the `titleOf` helper). I ran `biome format --write` on that file only and it wrapped the line. I added `riavadhavkar` to `.github/contributors.txt` for the CLA and made two commits with plain imperative subjects. Before committing, my clone had no git identity, so I set a repo-local name and my GitHub noreply address, not my real email. No deviations from the plan.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: Claude Code writing the test file and running the checks, with biome as the formatter
+- What it produced: `og.test.ts` (25 tests), the CLA line, two commits, and `test_evidence.md` with every output
+- Difficulties: the formatter complaint above and the missing git identity; nothing else broke
+- What changed: formatted the one file, set a repo-local git identity
 
 ---
 
 ## Pull Request
 
-**PR Link:** [GitHub PR URL when opened]
+**PR Link:** https://github.com/elmohq/elmo/pull/1178
 
-**PR Description:** [what the PR says; much of the content above
-adapts into it]
+**PR Description:** Adds apps/www/src/lib/__tests__/og.test.ts with 25 tests for getMarketingOgImage and getPageImage (the cases listed in the issue, with the title read back out of the URL), and my username in .github/contributors.txt for the CLA. It says "Fixes #1173", shows the before ("No test files found") and after (25 passed) output, the three clean-shell checks, 100% coverage of og.ts, a regression check, what I did not run, and a notes-for-reviewers section on the AI help.
 
 **Maintainer Feedback:**
 
-- [Date]: [feedback received, or "none yet"; silence is a normal
-  state and costs you nothing]
-- [Date]: [how you addressed it]
+- 2026-11-11: none yet. The PR was opened today. The only status on it is Vercel's "Authorization required to deploy", which is the standard fork-PR authorization a maintainer has to give; it is not a test failure.
 
-**Status:** [Awaiting review / Iterating / Merged / Closed. The
-status is a fact you record, never a grade: the PR is graded as
-opened.]
+**Status:** Awaiting review
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: the ship-gate (my manifest plus my pr-precheck) and the PR-creation command run through Claude Code, with the voice guard on the PR text
+- What it produced: four gate runs (one reject, three passes), a PR title and body that passed the voice guard, and PR #1178 targeting elmohq/elmo main from my fork
+- Difficulties: my first test file broke an instruction in the issue that I had read past; the install script was first blocked by Claude Code's auto-mode classifier, so I ran it myself; hooks only load at session start, so I tested them with a fresh claude -p session
+- What changed: I nested the describes, reworded two paragraphs in the PR text, and corrected the AI-help paragraph so it credits Claude Code for the setup work
 
 ---
 
