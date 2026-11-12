@@ -245,8 +245,9 @@ I opened the PR through Claude Code after the gate passed, and checked that it t
 **Maintainer Feedback:**
 
 - 2026-11-11: none yet. The PR was opened today. The only status on it is Vercel's "Authorization required to deploy", which is the standard fork-PR authorization a maintainer has to give; it is not a test failure.
+- 2026-11-12: Maintainer jrhizor approved the PR with the comment "thanks!" (00:07Z), pushed one commit of their own on top of my three (aa07a0b, "test og helpers by observable output and stop stripping hyphenated Elmo words"), and merged it at 00:09Z, about 2.2 hours after I opened it. Their commit added a few cases to my test file, simplified my URL helper, and changed three lines in og.ts so that words like "Elmo-Powered" are no longer stripped. Issue #1173 closed automatically.
 
-**Status:** Awaiting review
+**Status:** Merged (2026-11-12)
 
 **Toolkit**
 
