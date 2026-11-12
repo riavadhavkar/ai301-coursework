@@ -28,11 +28,12 @@ fields.
 
 **Run history**
 
-I did three runs. The template requires the last score listed to match the saved `eval-run.txt`, so the saved full run is listed last. Run 3 was done after run 2.
+I did two runs, then one partial re-check.
 
-1. Smoke test (partial, wrote no file): `python3 run_eval.py --skill ~/.claude/skills/pr-precheck --limit 3`. Score: 3/3 agreed.
-2. Re-grade of the two misses (partial, wrote no file): `--only pkg-08,pkg-11 --out results.json`. Score: 2/2 agreed, both graded accept. I did this after the full run below.
-3. Full run, saved with `--save-run eval-run.txt`. Score: 18/20. Its agreement line in `eval-run.txt` reads: `agreement: 18/20 scored items  (bar: 18/20: PASS)`. The misses were pkg-08 and pkg-11, both clear-accept packages that my skill rejected.
+1. Smoke test (partial, so it could not write `eval-run.txt`): `python3 run_eval.py --skill ~/.claude/skills/pr-precheck --limit 3`. Score: 3/3 agreed.
+2. Full run, saved with `--save-run eval-run.txt`. Score: 18/20. Its agreement line in `eval-run.txt` reads: `agreement: 18/20 scored items  (bar: 18/20: PASS)`. The misses were pkg-08 and pkg-11, both clear-accept packages that my skill rejected.
+
+After the full run, I re-graded only the two misses with `--only pkg-08,pkg-11 --out results.json`. Both graded accept (2/2). This was a partial check, not a third run, and it did not change the saved record: `eval-run.txt` is the record of run 2, my final run.
 
 I did not edit any skill file after the full run. The installed files still match the fingerprints in the `eval-run.txt` header (SKILL.md bd733c5c64a9f813, rubric.md 87b190a7a6048371, procedure.md a80e932b2da3567e, evidence-guide.md ed0149b5bed152ca).
 
