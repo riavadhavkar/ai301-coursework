@@ -1,12 +1,10 @@
 # Demo Day Script (5 minutes)
 
-## 0:00 to 0:30: Toolkit story
-
 **Show:** top of the write-up, title and Overview.
 
 **Say:**
 
-> Hi everyone, I'm Ria. My toolkit is four tools from this course: an issue scout, repro-check, ship-gate and a PR monitor. I used them to get a first open source contribution merged in Elmo, 25 tests for two untested helper functions. Claude Code did most of the typing. My part was the judgment calls, like which issue to pick and what to approve.
+> Hey everyone, my name is Ria and my toolkit consists of four tools from this course: an issue scout, repro-check, ship-gate and a PR monitor. And I used them to get my first open source contribution merged into Elmo which is an open source AI visibility project. I wrote 25 tests for two untested helper functions. I would say my part in this project was to make the judgment calls, like which issue to pick and what to approve since Claude handled the rest.
 
 ## 0:30 to 1:45: The friction
 
@@ -14,7 +12,7 @@
 
 **Say:**
 
-> I want to walk through the scout, because its miss taught me the most. On Nov 11 it scanned 300 results, kept 190 after filters and accepted 5. It also got two issues wrong because the work was already done. It accepted kana-dojo 33943 even though it was finished, and it only rejected OpenSearch 7141 because of other checks. The scout's own read-out said it plainly: the rubric had no "already fixed or has an open PR" check, and the fix belonged in the rubric.
+> Now, I want to take a moment to walk through the scout. So on Nov 11 it scanned around 300 results and kept 190 after filters but ended up accepting only 5. It also got two issues wrong because the work for those was already done. The cause of this was that the rubric had no "already fixed or has an open PR" check, and the fix belonged in the rubric and this was read out by the scout.
 
 ## 1:45 to 2:30: The change
 
@@ -22,7 +20,7 @@
 
 **Say:**
 
-> So here's the change. Claude Code added this row, not-already-done. It fails an issue if the change is already on the default branch, or a merged PR delivers it. I reviewed it before it went in.
+> And to fix that Claude Code added this row called not-already-done which fails an issue if the change is already on the default branch, or a merged PR delivers it. And I reviewed this change before it went in.
 
 ## 2:30 to 3:30: The result
 
@@ -30,7 +28,7 @@
 
 **Say:**
 
-> With the patched scout, four of the Elmo issues it checked already had open PRs. Issue 1173 had none and passed all six checks, so I picked it over 996. I claimed it, and PR 1178 was approved and merged about 2.2 hours after I opened it. So the change that mattered wasn't more code. It was one line in a rubric.
+> Now with the patched scout, four of the Elmo issues it checked already had open PRs. Issue 1173 had none and passed all six checks, so I picked that and claimed it, and PR 1178 was approved and merged about 2 hours after I opened it. The takeaway here was to change the rubric.
 
 ## 3:30 to 4:15: One honest limit
 
@@ -38,7 +36,7 @@
 
 **Say:**
 
-> One honest limit: I haven't rerun my Unit 1 regression since adding that row, so I don't know yet whether it changes how the scout grades the old eval items.
+> One limitation that I encountered was that even though Elmo as a repository showed up on the course site, this particular issue wasn't on there to claim so instead I went ahead and added a comment on the GitHub issue itself. 
 
 ## 4:15 to 5:00: What's next
 
@@ -46,7 +44,7 @@
 
 **Say:**
 
-> Next, I'd rerun that regression and tighten the row if anything flips. I'd also have the scout check whether maintainers actually answer outsiders. I did that by hand with gh this time. Thanks, happy to take questions.
+> What's next is that, I'd have the scout check whether maintainers answer outsiders because I did that by hand with gh this time. That wraps up my project, thank you!
 
 
 
