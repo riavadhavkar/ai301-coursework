@@ -40,7 +40,7 @@
 
 > What's next is that, I'd have the scout check whether maintainers answer outsiders because I did that by hand with gh this time.
 
-> One more thing I'd like to highlight is that the maintainer of the repo I contributed to merged my PR super fast which matched the response times i had checked by hand. I noticed that they also went ahead and edited my code by adding some more test cases and simplifying my URL helper code. They did this in another commit. But overall, I was super happy with my first ever open source contribution. That wraps up my project, thank you!
+> One more thing I'd like to highlight is that the maintainer of the repo I contributed to merged my PR super fast which matched the response times i had checked by hand. I noticed that they also went ahead and edited my code by adding some more test cases and simplifying my URL helper code. They did this in a separate commit, but overall I was super happy with my first ever open source contribution. That wraps up my project, thank you!
 
 ## Q&A answers (from your page)
 
