@@ -28,7 +28,7 @@
 
 **Say:**
 
-> Now with the patched scout, four of the Elmo issues it checked already had open PRs. Issue 1173 had none and passed all six checks, so I picked that and claimed it, and PR 1178 was approved and merged about 2 hours after I opened it. The takeaway here was that the fix was one line in a rubric and not more code.
+> Now with the patched scout, four of the Elmo issues it checked already had open PRs. but issue 1173 had none and passed all six checks, so I picked that and claimed it, and PR 1178 was approved and merged about 2 hours after I opened it. The takeaway here was that the fix was one line in a rubric and not more code.
 
 # SCROLL
 
