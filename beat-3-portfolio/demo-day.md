@@ -4,7 +4,7 @@
 
 **Say:**
 
-> Hey everyone, my name is Ria and my toolkit consists of four tools from this course: an issue scout, repro-check, ship-gate and a PR monitor. And I used them to get my first open source contribution merged into Elmo which is an open source AI visibility project. I wrote 25 tests for two untested helper functions. I would say my part in this project was to make the judgment calls, like which issue to pick and what to approve since Claude handled the rest.
+> Hey everyone, my name is Ria and my toolkit consists of four tools from this course: an issue scout, repro-check, ship-gate and a PR monitor. And I used them to get my first open source contribution merged into Elmo which is an open source AI visibility project. I wrote 25 tests for two untested helper functions with the help of Claude. I would say my part in this project was to make the judgment calls, like which issue to pick and what to approve since Claude handled the rest.
 
 ## 0:30 to 1:45: The friction
 
@@ -12,7 +12,7 @@
 
 **Say:**
 
-> Now, I want to take a moment to walk through the scout. So on Nov 11 it scanned around 300 results and kept 190 after filters but ended up accepting only 5. It also got two issues wrong because the work for those was already done. The cause of this was that the rubric had no "already fixed or has an open PR" check, and the fix belonged in the rubric and this was read out by the scout.
+> Now, I want to take a moment to walk through the scout. So on Nov 11 it scanned around 300 results and kept 190 after filters but ended up accepting only 5. It also got two issues wrong because the work for those was already done. The scout's own read-out said the cause was that the rubric had no "already fixed or has an open PR" check, so the fix belonged in the rubric.
 
 ## 1:45 to 2:30: The change
 
@@ -28,7 +28,7 @@
 
 **Say:**
 
-> Now with the patched scout, four of the Elmo issues it checked already had open PRs. Issue 1173 had none and passed all six checks, so I picked that and claimed it, and PR 1178 was approved and merged about 2 hours after I opened it. The takeaway here was to change the rubric.
+> Now with the patched scout, four of the Elmo issues it checked already had open PRs. Issue 1173 had none and passed all six checks, so I picked that and claimed it, and PR 1178 was approved and merged about 2 hours after I opened it. The takeaway here was that the fix was one line in a rubric and not more code.
 
 ## 3:30 to 4:15: One honest limit
 
@@ -36,7 +36,7 @@
 
 **Say:**
 
-> One limitation that I encountered was that even though Elmo as a repository showed up on the course site, this particular issue wasn't on there to claim so instead I went ahead and added a comment on the GitHub issue itself. 
+> One limitation that I encountered was that issue 1173 wasn't listed on the course site, so I couldn't claim it there. Instead I went ahead and added a comment on the GitHub issue itself. 
 
 ## 4:15 to 5:00: What's next
 
@@ -44,7 +44,9 @@
 
 **Say:**
 
-> What's next is that, I'd have the scout check whether maintainers answer outsiders because I did that by hand with gh this time. That wraps up my project, thank you!
+> What's next is that, I'd have the scout check whether maintainers answer outsiders because I did that by hand with gh this time.
+
+> One more thing I'd like to highlight is that the maintainer of the repo I contributed to merged my PR super fast since they are very active on this project. I noticed that they also edited my code by adding some more test cases and simplifying my code. Overall, I was super happy with my first ever open source contribution. That wraps up my project, thank you!
 
 
 
